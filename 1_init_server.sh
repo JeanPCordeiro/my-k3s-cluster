@@ -34,7 +34,6 @@ usermod -aG sudo leansys
 apt install net-tools iftop -y
 apt install xfsprogs -y
 apt install open-iscsi -y
-apt install iscsiadm -y
 apt install wireguard -y
 apt install -y jq
 apt install -y nfs-common
