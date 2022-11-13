@@ -4,7 +4,7 @@ set -o xtrace
 #
 # Install k3s
 #
-cat ./manifests/traefik-config.yaml | envsubst | kubectl apply -f -
+cat traefik-config.yaml | envsubst | kubectl apply -f -
 
 #
 # Install longhorn

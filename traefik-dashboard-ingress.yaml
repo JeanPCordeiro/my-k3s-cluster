@@ -10,7 +10,7 @@ spec:
     - host: traefik.${DOMAIN}
       http:
         paths:
-          - path: /
+          - path: /dashboard/
             pathType: Prefix
             backend:
               service:

@@ -16,4 +16,3 @@ spec:
   selector:
     app.kubernetes.io/instance: traefik
     app.kubernetes.io/name: traefik
-
