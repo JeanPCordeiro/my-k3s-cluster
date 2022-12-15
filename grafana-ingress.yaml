@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: default-my-basic-auth@kubernetescrd
 spec:
   rules:
-  - host: grafana.${DOMAIN}
+  - host: grafana.sys.${DOMAIN}
     http:
       paths:
       - path: /
@@ -21,4 +21,4 @@ spec:
   tls:
     - secretName: grafana-tls
       hosts:
-        - grafana.${DOMAIN}
+        - grafana.sys.${DOMAIN}

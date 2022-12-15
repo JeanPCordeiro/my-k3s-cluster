@@ -12,7 +12,5 @@ spec:
       services:
         - name: api@internal
           kind: TraefikService
-      middlewares:
-        - name: my-basic-auth
   tls:
     secretName: traefik-tls

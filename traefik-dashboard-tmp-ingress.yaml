@@ -1,26 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: longhorn-ingress
-  namespace: longhorn-system
+  name: traefik-ingress
   annotations:
     kubernetes.io/ingress.class: traefik
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: default-my-basic-auth@kubernetescrd
-
 spec:
   rules:
-  - host: longhorn.sys.${DOMAIN}
+  - host: traefik.sys.${DOMAIN}
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: longhorn-frontend
+            name: echo1
             port:
               number: 80
   tls:
-    - secretName: longhorn-tls
+    - secretName: traefik-tls
       hosts:
-        - longhorn.sys.${DOMAIN}
+        - traefik.sys.${DOMAIN}

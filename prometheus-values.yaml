@@ -9,6 +9,8 @@ kubeScheduler:
   enabled: false
 
 prometheus:
+  nodeExporter:
+    enabled: false
   prometheusSpec:
     retention: 3d
 
@@ -51,3 +53,4 @@ grafana:
   #  - kubernetes.io/pvc-protection
   # ALTERNATIVELY IF YOU HAVE AN EXISTING CLAME YOU WISH TO USE/REUSE
   # existingClaim: prom-grafana
+  #

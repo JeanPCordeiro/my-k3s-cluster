@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: default-my-basic-auth@kubernetescrd
 spec:
   rules:
-    - host: traefik.${DOMAIN}
+    - host: traefik.sys.${DOMAIN}
       http:
         paths:
           - path: /
@@ -18,4 +18,3 @@ spec:
                 name: traefik-dashboard
                 port:
                   number: 9000
-

@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: default-my-basic-auth@kubernetescrd
 spec:
   rules:
-  - host: alert-manager.${DOMAIN}
+  - host: alert.sys.${DOMAIN}
     http:
       paths:
       - path: /
@@ -21,4 +21,4 @@ spec:
   tls:
     - secretName: alert-manager-tls
       hosts:
-        - alert-manager.${DOMAIN}
+        - alert.sys.${DOMAIN}

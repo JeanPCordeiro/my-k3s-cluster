@@ -1,0 +1,195 @@
+---
+#
+# MySQL Secret
+#
+apiVersion: v1
+kind: Secret
+metadata:
+  name: wp-db-secrets
+type: Opaque
+data:
+  MYSQL_ROOT_PASSWORD: YWRtaW4=
+---
+#
+# MySQL PVC
+#
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-volume
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+#
+# MySQL Deployment
+#
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: database
+        image: mysql:5.7
+        args:
+          # mount volume
+          - "--ignore-db-dir=lost+found"
+        # add root password
+        envFrom:
+          - secretRef:
+              name: wp-db-secrets
+        ports:
+          - containerPort: 3306
+        volumeMounts:
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb-config
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-volume
+---
+#
+# MySQL Init DataBase
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-initdb-config
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS prestashop;
+---
+#
+# MySQL Service
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+  selector:
+    app: mysql
+---
+#
+# WP PVC
+#
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prestashop-volume
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+#
+# WP Deployment
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prestashop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prestashop
+  template:
+    metadata:
+      labels:
+        app: prestashop
+    spec:
+      containers:
+        - name: prestashop
+          image: prestashop/prestashop
+          ports:
+          - containerPort: 80
+            name: prestashop
+          volumeMounts:
+            - name: prestashop-data
+              mountPath: /var/www
+          env:
+            - name: DB_SERVER
+              value: mysql-service.presta.svc.cluster.local
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wp-db-secrets
+                  key: MYSQL_ROOT_PASSWORD
+            - name: DB_USER
+              value: root
+            - name: DB_NAME
+              value: prestashop
+      volumes:
+        - name: prestashop-data
+          persistentVolumeClaim:
+            claimName: prestashop-volume
+---
+#
+# WP Service
+#
+kind: Service
+apiVersion: v1
+metadata:
+  name: prestashop-service
+spec:
+  selector:
+    app: prestashop
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+---
+#
+# WP Ingress
+#
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prestashop-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: ${DOMAIN}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prestashop-service
+            port:
+              number: 80
+  tls:
+    - secretName: prestashop-tls
+      hosts:
+        - ${DOMAIN}

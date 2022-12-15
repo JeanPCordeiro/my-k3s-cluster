@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: default-my-basic-auth@kubernetescrd
 spec:
   rules:
-  - host: prometheus.${DOMAIN}
+  - host: prometheus.sys.${DOMAIN}
     http:
       paths:
       - path: /
@@ -21,4 +21,4 @@ spec:
   tls:
     - secretName: prometheus-tls
       hosts:
-        - prometheus.${DOMAIN}
+        - prometheus.sys.${DOMAIN}
