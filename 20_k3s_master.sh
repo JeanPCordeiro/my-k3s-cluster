@@ -10,4 +10,3 @@ watch kubectl get pods -A
 
 cat ./traefik-config.yaml | envsubst | kubectl apply -f -
 watch kubectl get pods -A
-

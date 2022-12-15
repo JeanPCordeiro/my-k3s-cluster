@@ -1,6 +1,8 @@
 #!/bin/bash
 set -o xtrace
 
+export KUBECONFIG=/etc/k3s.yaml
+
 #
 # Install Longhorn
 #

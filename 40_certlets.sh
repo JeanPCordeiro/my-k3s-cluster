@@ -1,6 +1,8 @@
 #!/bin/bash
 set -o xtrace
 
+export KUBECONFIG=/etc/k3s.yaml
+
 export EMAIL=jeanpierre.cordeiro@gmail.com
 
 #
@@ -13,5 +15,3 @@ cat letsencrypt-prod.yaml | envsubst | kubectl apply -f -
 watch kubectl get pods -A
 cat traefik-https-redirect-middleware.yaml | envsubst | kubectl apply -f -
 watch kubectl get pods -A
-
-
