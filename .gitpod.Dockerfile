@@ -1,4 +1,4 @@
-FROM gitpod/workspace-base
+FROM gitpod/workspace-full
 
 RUN sudo apt update -y
 RUN sudo apt-get install -y ca-certificates curl
