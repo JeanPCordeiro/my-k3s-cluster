@@ -3,11 +3,14 @@ set -o xtrace
 
 export KUBECONFIG=/etc/k3s.yaml
 
+export NAMESITE=site2
+
 export EMAIL=jeanpierre.cordeiro@gmail.com
-export DOMAIN=site.lean-sys.com
+export DOMAIN=${NAMESITE}.lean-sys.com
 
 #
 # Install Wordpress
 #
-kubectl create ns website
-cat wordpress.yaml | envsubst | kubectl apply -f - -n website
+kubectl create ns ${NAMESITE}
+cat wordpress-local.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+#cat wordpress.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}

@@ -4,10 +4,20 @@ set -o xtrace
 export KUBECONFIG=/etc/k3s.yaml
 
 export EMAIL=jeanpierre.cordeiro@gmail.com
-export DOMAIN=presta.lean-sys.com
 
 #
-# Install Prestashop
+# Install Prestashop LongHorn
 #
-kubectl create ns presta
-cat prestashop.yaml | envsubst | kubectl apply -f - -n presta
+export NAMESITE=presta1
+export DOMAIN=${NAMESITE}.lean-sys.com
+kubectl create ns ${NAMESITE}
+cat prestashop.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+
+#
+# Install Prestashop Local
+#
+export NAMESITE=presta2
+export DOMAIN=${NAMESITE}.lean-sys.com
+kubectl create ns ${NAMESITE}
+cat prestashop-local.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+

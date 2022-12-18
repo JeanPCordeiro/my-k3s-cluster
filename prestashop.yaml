@@ -136,7 +136,7 @@ spec:
               mountPath: /var/www
           env:
             - name: DB_SERVER
-              value: mysql-service.presta.svc.cluster.local
+              value: mysql-service
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:

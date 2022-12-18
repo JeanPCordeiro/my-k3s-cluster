@@ -59,15 +59,12 @@ spec:
         volumeMounts:
         - name: mysql-initdb
           mountPath: /docker-entrypoint-initdb.d
-        - name: mysql-data
-          mountPath: /var/lib/mysql
+
       volumes:
         - name: mysql-initdb
           configMap:
             name: mysql-initdb-config
-        - name: mysql-data
-          persistentVolumeClaim:
-            claimName: mysql-volume
+
 ---
 #
 # MySQL Init DataBase
@@ -131,9 +128,7 @@ spec:
           ports:
           - containerPort: 80
             name: wordpress
-          volumeMounts:
-            - name: wordpress-data
-              mountPath: /var/www
+
           env:
             - name: WORDPRESS_DB_HOST
               value: mysql-service
@@ -146,10 +141,7 @@ spec:
               value: root
             - name: WORDPRESS_DB_NAME
               value: wordpress
-      volumes:
-        - name: wordpress-data
-          persistentVolumeClaim:
-            claimName: wordpress-volume
+
 ---
 #
 # WP Service
