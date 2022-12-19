@@ -18,6 +18,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-volume
+  labels:
+    storageos.com/replicas: "1"                  # Replica volume count of 1
+    storageos.com/failure-mode: hard
 spec:
   accessModes:
   - ReadWriteOnce
@@ -102,6 +105,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: prestashop-volume
+  labels:
+    storageos.com/replicas: "1"                  # Replica volume count of 1
+    storageos.com/failure-mode: hard
 spec:
   accessModes:
   - ReadWriteOnce
