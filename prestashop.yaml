@@ -43,6 +43,7 @@ spec:
     metadata:
       labels:
         app: mysql
+        team: "${NAMESITE}"
     spec:
       containers:
       - name: database
@@ -125,6 +126,16 @@ spec:
       labels:
         app: prestashop
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: team
+                operator: In
+                values:
+                - "${NAMESITE}"
+            topologyKey: kubernetes.io/hostname
       containers:
         - name: prestashop
           image: prestashop/prestashop
