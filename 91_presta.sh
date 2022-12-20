@@ -8,16 +8,32 @@ export EMAIL=jeanpierre.cordeiro@gmail.com
 #
 # Install Prestashop LongHorn
 #
-export NAMESITE=presta3
+export NAMESITE=presta-long
 export DOMAIN=${NAMESITE}.lean-sys.com
 kubectl create ns ${NAMESITE}
-cat prestashop.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+cat prestashop-long.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+
+#
+# Install Prestashop OpenEBS
+#
+#export NAMESITE=presta-ebs
+#export DOMAIN=${NAMESITE}.lean-sys.com
+#kubectl create ns ${NAMESITE}
+#cat prestashop-ebs.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+
+#
+# Install Prestashop StorageOS
+#
+#export NAMESITE=presta-stor
+#export DOMAIN=${NAMESITE}.lean-sys.com
+#kubectl create ns ${NAMESITE}
+#cat prestashop-stor.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
 
 #
 # Install Prestashop Local
 #
-export NAMESITE=presta4
-export DOMAIN=${NAMESITE}.lean-sys.com
-kubectl create ns ${NAMESITE}
-cat prestashop-local.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+#export NAMESITE=presta-local
+#export DOMAIN=${NAMESITE}.lean-sys.com
+#kubectl create ns ${NAMESITE}
+#cat prestashop-local.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
 

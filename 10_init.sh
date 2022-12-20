@@ -18,3 +18,5 @@ apt install -y net-tools
 apt install -y iftop
 apt install -y open-iscsi
 apt install -y apache2-utils
+
+systemctl enable --now iscsid

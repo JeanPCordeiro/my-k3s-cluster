@@ -11,6 +11,22 @@ data:
   MYSQL_ROOT_PASSWORD: YWRtaW4=
 ---
 #
+# MySQL PVC
+#
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-volume
+spec:
+  storageClassName: longhorn-2
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+#
 # MySQL Deployment
 #
 apiVersion: apps/v1
@@ -28,6 +44,7 @@ spec:
     metadata:
       labels:
         app: mysql
+        team: "${NAMESITE}"
     spec:
       containers:
       - name: database
@@ -44,12 +61,15 @@ spec:
         volumeMounts:
         - name: mysql-initdb
           mountPath: /docker-entrypoint-initdb.d
-
+        - name: mysql-data
+          mountPath: /var/lib/mysql
       volumes:
         - name: mysql-initdb
           configMap:
             name: mysql-initdb-config
-
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-volume
 ---
 #
 # MySQL Init DataBase
@@ -77,6 +97,21 @@ spec:
     app: mysql
 ---
 #
+# WP PVC
+#
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prestashop-volume
+spec:
+  storageClassName: longhorn-2
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+#
 # WP Deployment
 #
 apiVersion: apps/v1
@@ -93,13 +128,25 @@ spec:
       labels:
         app: prestashop
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: team
+                operator: In
+                values:
+                - "${NAMESITE}"
+            topologyKey: kubernetes.io/hostname
       containers:
         - name: prestashop
           image: prestashop/prestashop
           ports:
           - containerPort: 80
             name: prestashop
-
+          volumeMounts:
+            - name: prestashop-data
+              mountPath: /var/www
           env:
             - name: DB_SERVER
               value: mysql-service
@@ -112,7 +159,10 @@ spec:
               value: root
             - name: DB_NAME
               value: prestashop
-
+      volumes:
+        - name: prestashop-data
+          persistentVolumeClaim:
+            claimName: prestashop-volume
 ---
 #
 # WP Service
