@@ -9,6 +9,8 @@ export MASTER3=vmi1026787.contaboserver.net
 # Install Kubectl & Helm
 #
 
+rm ~/.ssh/known_hosts
+
 ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 
 scp ~/.ssh/id_rsa.pub root@${MASTER1}:./

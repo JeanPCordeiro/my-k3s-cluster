@@ -20,3 +20,16 @@ apt install -y open-iscsi
 apt install -y apache2-utils
 
 systemctl enable --now iscsid
+
+systemctl disable snapd.service
+systemctl disable snapd.socket
+systemctl disable snapd.seeded.service
+snap list
+snap remove lxd
+snap remove core20
+snap remove snapd
+rm -rf /var/cache/snapd/
+apt autoremove --purge snapd
+rm -rf ~/snap
+
+reboot

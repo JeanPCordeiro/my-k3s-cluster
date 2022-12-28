@@ -10,3 +10,5 @@ losetup -a
 cp losetup.service /etc/systemd/system/losetup.service
 systemctl enable --now losetup
 losetup -a
+
+reboot

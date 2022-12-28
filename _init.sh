@@ -9,10 +9,10 @@ export MASTER3=vmi1026787.contaboserver.net
 # Install Kubectl & Helm
 #
 scp 10_init.sh root@${MASTER1}:.
-ssh root@${MASTER1} ./10_init.sh
+ssh root@${MASTER1}
 
 scp 10_init.sh root@${MASTER2}:.
-ssh root@${MASTER2} ./10_init.sh
+ssh root@${MASTER2} 
 
 scp 10_init.sh root@${MASTER3}:.
-ssh root@${MASTER3} ./10_init.sh
+ssh root@${MASTER3} 

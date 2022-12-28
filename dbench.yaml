@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: dbench-pv-claim
 spec:
-  storageClassName: px-csi-replicated
+  storageClassName: px-csi-db
   # storageClassName: gp2
   # storageClassName: local-storage
   # storageClassName: ibmc-block-bronze
