@@ -6,12 +6,21 @@ export KUBECONFIG=/etc/k3s.yaml
 export EMAIL=jeanpierre.cordeiro@gmail.com
 
 #
-# Install Prestashop LongHorn
+# Install Prestashop PortWorx
 #
-export NAMESITE=presta-long
+export NAMESITE=presta-worx
 export DOMAIN=${NAMESITE}.lean-sys.com
 kubectl create ns ${NAMESITE}
-cat prestashop-long.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+cat prestashop-portworx.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
+
+
+#
+# Install Prestashop LongHorn
+#
+#export NAMESITE=presta-long
+#export DOMAIN=${NAMESITE}.lean-sys.com
+#kubectl create ns ${NAMESITE}
+#cat prestashop-long.yaml | envsubst | kubectl apply -f - -n ${NAMESITE}
 
 #
 # Install Prestashop OpenEBS

@@ -1,0 +1,10 @@
+[Unit]
+Description=Restore Loop Device
+Before=network-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/losetup -fP /disk150G.img
+
+[Install]
+WantedBy=multi-user.target
