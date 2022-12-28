@@ -4,7 +4,7 @@ Before=network-pre.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/losetup -fP /disk150G.img
+ExecStart=/usr/sbin/losetup -fP /disk300G.img
 
 [Install]
 WantedBy=multi-user.target
