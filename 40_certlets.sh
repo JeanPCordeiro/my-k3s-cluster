@@ -4,6 +4,7 @@ set -o xtrace
 export KUBECONFIG=/etc/k3s.yaml
 
 export EMAIL=jeanpierre.cordeiro@gmail.com
+export DOMAIN=lean-sys.com
 
 #
 # Install Cert Manager
@@ -15,3 +16,7 @@ cat letsencrypt-prod.yaml | envsubst | kubectl apply -f -
 watch kubectl get pods -A
 cat traefik-https-redirect-middleware.yaml | envsubst | kubectl apply -f -
 watch kubectl get pods -A
+
+kubectl apply -f whoami-deployment.yaml 
+kubectl apply -f whoami-service.yaml
+cat whoami-ingress-tls.yaml | envsubst | kubectl apply -f -

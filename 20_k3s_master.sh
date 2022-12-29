@@ -16,5 +16,5 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.23.5+k3s1 K3S_TOKEN=LeanSy
 --advertise-address=${NODE_INTERNAL_IP} \
 --flannel-iface=${INTERNAL_INTERFACE}
 
-watch kubectl get nodes -o wide
-watch kubectl get pods -A
+kubectl get nodes -o wide
+kubectl get pods -A
