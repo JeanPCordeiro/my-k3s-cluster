@@ -1,0 +1,22 @@
+---
+# tasks file for base
+- name: Install tools for (Debian os family)
+  apt:
+    name: ['fail2ban', 'net-tools', 'iftop', 'open-iscsi', 'apache2-utils']
+    state: present
+    update_cache: yes
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Enable service iscsid
+  ansible.builtin.service:
+    name: iscsid
+    enabled: yes
+
+#- name: Unconditionally reboot the machine with all defaults
+#  ansible.builtin.reboot:
+
+- name: Check the Uptime of the servers
+  shell: "uptime"
+  register: Uptime
+
+- debug: var=Uptime

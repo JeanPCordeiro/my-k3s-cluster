@@ -1,0 +1,10 @@
+---
+
+# WEB SERVER
+
+- hosts: all
+  become: true
+
+  roles:
+    - base
+
