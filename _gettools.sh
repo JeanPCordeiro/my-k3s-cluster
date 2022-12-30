@@ -13,7 +13,8 @@ sudo apt update
 sudo apt-get install gettext-base -y
 
 pip install --user ansible
+pip install --user openshift
 pip install --user kubernetes
-pip install --user python-dateutil
+sudo pip3 install python-dateutil
 ansible-galaxy collection install kubernetes.core
 
