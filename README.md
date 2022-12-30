@@ -4,3 +4,13 @@
 
 
 A full k3s kubernetes cluster stack
+
+Command to install :
+```bash
+ansible-playbook -u root -i Inventory/hosts.ini Install.yaml
+```
+
+Command to uninstall :
+```bash
+ansible-playbook -u root -i Inventory/hosts.ini UnInstall.yaml 
+```

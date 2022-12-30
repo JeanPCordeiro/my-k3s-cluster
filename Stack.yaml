@@ -1,0 +1,16 @@
+---
+
+# Install K3S Stack
+
+- name: provisioning resources
+  hosts: local
+  gather_facts: yes
+  become: no
+
+  tasks:
+    - name: Create a namespace
+      k8s:
+        name: testns
+        api_version: v1
+        kind: Namespace
+        state: present

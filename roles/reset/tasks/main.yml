@@ -1,0 +1,5 @@
+---
+# tasks file for reset
+
+- name: Uninstall K3S
+  command: k3s-uninstall.sh

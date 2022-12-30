@@ -1,0 +1,11 @@
+---
+# tasks file for master
+
+#- name: Install K3S as master node
+#  ansible.builtin.command: curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.23.5+k3s1 K3S_TOKEN=LeanSysK3sToken sh -s server --cluster-init --node-external-ip=${NODE_EXTERNAL_IP} --node-ip=${NODE_INTERNAL_IP} --advertise-address=${NODE_INTERNAL_IP} --flannel-iface=${INTERNAL_INTERFACE}
+
+#- debug:
+#    msg: "curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} K3S_TOKEN={{ k3s_token }} sh -s server --cluster-init --node-external-ip={{ ansible_eth0.ipv4.address }} --node-ip={{ ansible_eth1.ipv4.address }} --advertise-address={{ ansible_eth1.ipv4.address }} --flannel-iface=eth1"
+
+- name: Install K3S as initial master node
+  shell: 'curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} K3S_TOKEN={{ k3s_token }} sh -s server --cluster-init --node-external-ip={{ ansible_eth0.ipv4.address }} --node-ip={{ ansible_eth1.ipv4.address }} --advertise-address={{ ansible_eth1.ipv4.address }} --flannel-iface=eth1'

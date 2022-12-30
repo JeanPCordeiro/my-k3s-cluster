@@ -1,0 +1,8 @@
+---
+
+k3s_version: v1.23.5+k3s1
+k3s_token: LeanSysK3sToken
+extra_server_args: ""
+extra_agent_args: ""
+
+MASTER_IP: 10.0.0.3

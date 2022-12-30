@@ -1,0 +1,10 @@
+---
+
+# Remove K3S Stack
+
+- hosts: k3s_cluster
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: reset
+    
