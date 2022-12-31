@@ -1,2 +1,5 @@
 image: jpcordeiro/gitpod-kube:latest
 
+vscode:
+  extensions:
+    - ms-vscode.makefile-tools
