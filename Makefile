@@ -18,9 +18,10 @@ set_ssh:
 	ssh-copy-id root@${MASTER3}	
 
 test_ssh:
-	ssh root@${MASTER1} uname -a
-	ssh root@${MASTER2} uname -a
-	ssh root@${MASTER3} uname -a
+	ssh root@${MASTER1} uptime
+	ssh root@${MASTER2} uptime
+	ssh root@${MASTER3} uptime
+
 
 test_ansible:
 	ansible -u root -i Inventory/hosts.ini all -m ping

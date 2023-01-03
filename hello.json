@@ -1,0 +1,12 @@
+{
+    "lookup" : null,
+    "commands" : [ {
+      "insert" : {
+        "object" : "Francesco"
+      }
+
+    }, {
+      "fire-all-rules" : { }
+    } ]
+  }
+  
