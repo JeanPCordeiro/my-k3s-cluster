@@ -20,7 +20,7 @@ metadata:
   name: mysql-volume
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -45,22 +45,22 @@ spec:
         app: mysql
     spec:
       containers:
-      - name: database
-        image: mysql:5.7
-        args:
-          # mount volume
-          - "--ignore-db-dir=lost+found"
-        # add root password
-        envFrom:
-          - secretRef:
-              name: wp-db-secrets
-        ports:
-          - containerPort: 3306
-        volumeMounts:
-        - name: mysql-initdb
-          mountPath: /docker-entrypoint-initdb.d
-        - name: mysql-data
-          mountPath: /var/lib/mysql
+        - name: database
+          image: mysql:5.7
+          args:
+            # mount volume
+            - "--ignore-db-dir=lost+found"
+          # add root password
+          envFrom:
+            - secretRef:
+                name: wp-db-secrets
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-initdb
+              mountPath: /docker-entrypoint-initdb.d
+            - name: mysql-data
+              mountPath: /var/lib/mysql
       volumes:
         - name: mysql-initdb
           configMap:
@@ -89,8 +89,8 @@ metadata:
   name: mysql-service
 spec:
   ports:
-  - port: 3306
-    protocol: TCP
+    - port: 3306
+      protocol: TCP
   selector:
     app: mysql
 ---
@@ -103,7 +103,7 @@ metadata:
   name: wordpress-volume
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
@@ -129,8 +129,8 @@ spec:
         - name: wordpress
           image: wordpress:5.8.3-php7.4-apache
           ports:
-          - containerPort: 80
-            name: wordpress
+            - containerPort: 80
+              name: wordpress
           volumeMounts:
             - name: wordpress-data
               mountPath: /var/www
@@ -177,18 +177,19 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
 spec:
   rules:
-  - host: ${DOMAIN}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: wordpress-service
-            port:
-              number: 80
+    - host: ${DOMAIN}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wordpress-service
+                port:
+                  number: 80
   tls:
     - secretName: wordpress-tls
       hosts:
