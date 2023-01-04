@@ -62,14 +62,10 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: KIE_SERVER_ID
-              value: sample-server
-            - name: KIE_SERVER_LOCATION
-              value: https://kie-server.drools.${DOMAIN}/kie-server/services/rest/server
-            - name: KIE_SERVER_CONTROLLER
-              value: https://kie-wb.drools.${DOMAIN}/business-central/rest/controller
-            - name: KIE_MAVEN_REPO
-              value: https://kie-wb.drools.${DOMAIN}/business-central/maven2
+            - name: KIE_SERVER_ID: sample-server
+            - name: KIE_SERVER_LOCATION: http://kie.drools.${DOMAIN}/kie-server/services/rest/server
+            - name: KIE_SERVER_CONTROLLER: http://wb.drools.${DOMAIN}/business-central/rest/controller
+            - name: KIE_MAVEN_REPO: http://kie.drools.${DOMAIN}/business-central/maven2
 ---
 kind: Service
 apiVersion: v1
@@ -95,10 +91,9 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
 spec:
   rules:
-  - host: kie-wb.drools.${DOMAIN}
+  - host: wb.drools.${DOMAIN}
     http:
       paths:
       - path: /
@@ -111,7 +106,7 @@ spec:
   tls:
     - secretName: kie-wb-tls
       hosts:
-        - kie-wb.drools.${DOMAIN}
+        - wb.drools.${DOMAIN}
 ---
 #
 # Drools Ingress
@@ -124,10 +119,9 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
 spec:
   rules:
-  - host: kie-server.drools.${DOMAIN}
+  - host: kie.drools.${DOMAIN}
     http:
       paths:
       - path: /
@@ -140,4 +134,4 @@ spec:
   tls:
     - secretName: kie-server-tls
       hosts:
-        - kie-server.drools.${DOMAIN}
+        - kie.drools.${DOMAIN}
