@@ -63,7 +63,7 @@ spec:
             - containerPort: 8080
           env:
             - name: KIE_SERVER_ID
-              value: sample-server
+              value: kie-server.drools.${DOMAIN}
             - name: KIE_SERVER_LOCATION
               value: https://kie-server.drools.${DOMAIN}/kie-server/services/rest/server
             - name: KIE_SERVER_CONTROLLER
