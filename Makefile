@@ -111,4 +111,57 @@ drools_test:
 	echo "Execute Model"
 	curl -u 'kieserver:kieserver1!' -H "accept: application/json" -H "content-type: application/json" -X POST "https://kie-server.drools.lean-sys.com/kie-server/services/rest/server/containers/traffic-violation_1.0.0-SNAPSHOT/dmn" -d "{ \"model-namespace\" : \"https://kiegroup.org/dmn/_03DAAFDA-EF0E-492C-A752-7946B9646137\", \"model-name\" : \"Traffic Violation\", \"dmn-context\" : {\"Driver\" : {\"Points\" : 10}, \"Violation\" : {\"Type\" : \"speed\", \"Actual Speed\" : 135, \"Speed Limit\" : 100}}}"
 	echo
-	
+
+che_install:
+	bash <(curl -sL  https://www.eclipse.org/che/chectl/)
+
+newrelic_uninstall:
+	helmcurrent=$(helm list -n newrelic | tail -1 | awk '{ print $1 }')
+	helm uninstall "$helmcurrent" -n newrelic
+	kubectl delete -f https://raw.githubusercontent.com/pixie-labs/pixie/main/k8s/vizier_deps/base/nats/nats_crd.yaml
+	kubectl delete -f https://raw.githubusercontent.com/pixie-labs/pixie/main/k8s/operator/crd/base/px.dev_viziers.yaml
+	kubectl delete -f https://raw.githubusercontent.com/pixie-labs/pixie/main/k8s/operator/helm/crds/olm_crd.yaml
+	kubectl delete pods,services,deployments,statefulsets,secrets,clusterroles,clusterrolebindings -l app=pl-monitoring
+	kubectl delete pods,services,deployments,statefulsets,secrets,clusterroles,clusterrolebindings -l component=vizier
+	kubectl delete namespace newrelic
+
+kc_install:
+	kubectl create ns keycloak
+	kubectl apply -f kc_config.yaml
+	kubectl apply -f kc_secrets.yaml
+	kubectl apply -f kc_pvc.yaml
+	kubectl apply -f kc_deploy.yaml
+	kubectl apply -f kc_service.yaml
+	kubectl apply -f kc_ingress.yaml
+
+kc_config:
+	kubectl exec deploy/keycloak -n keycloak -- bash -c \
+    "/opt/jboss/keycloak/bin/kcadm.sh config credentials \
+        --server http://keycloak.sys.lean-sys.com \
+        --realm master \
+        --user admin@keycloak  \
+        --password @Lnss9700!! && \
+    /opt/jboss/keycloak/bin/kcadm.sh create realms \
+        -s realm='che' \
+        -s displayName='che' \
+        -s enabled=true \
+        -s registrationAllowed=false \
+        -s resetPasswordAllowed=true && \
+    /opt/jboss/keycloak/bin/kcadm.sh create clients \
+        -r 'che' \
+        -s clientId=k8s-client \
+        -s id=k8s-client \
+        -s redirectUris='[\"*\"]' \
+        -s directAccessGrantsEnabled=true \
+        -s secret=eclipse-che && \
+    /opt/jboss/keycloak/bin/kcadm.sh create users \
+        -r 'che' \
+        -s username=test \
+        -s email=\"test@test.com\" \
+        -s enabled=true \
+        -s emailVerified=true &&  \
+    /opt/jboss/keycloak/bin/kcadm.sh set-password \
+        -r 'che' \
+        --username test \
+        --new-password test"
+

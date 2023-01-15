@@ -1,0 +1,7 @@
+apiVersion: org.eclipse.che/v2
+spec:
+  networking:
+    auth:
+      identityProviderURL: https://keycloak.sys.lean-sys.com
+      oAuthClientName: k8s-client
+      oAuthSecret: hrTlz3DyuofpPyrhIx6HTj1eUbW9tkjuH397N_Dn

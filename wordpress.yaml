@@ -1,4 +1,9 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ${NAMESITE}
+---
 #
 # MySQL Secret
 #
@@ -6,6 +11,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: wp-db-secrets
+  namespace: ${NAMESITE}
 type: Opaque
 data:
   MYSQL_ROOT_PASSWORD: QExuc3M5NzAwISE=
@@ -18,6 +24,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-volume
+  namespace: ${NAMESITE}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -32,6 +39,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
+  namespace: ${NAMESITE}
   labels:
     app: mysql
 spec:
@@ -76,6 +84,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mysql-initdb-config
+  namespace: ${NAMESITE}
 data:
   init.sql: |
     CREATE DATABASE IF NOT EXISTS wordpress;
@@ -87,6 +96,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql-service
+  namespace: ${NAMESITE}
 spec:
   ports:
     - port: 3306
@@ -101,6 +111,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: wordpress-volume
+  namespace: ${NAMESITE}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -115,6 +126,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress
+  namespace: ${NAMESITE}
 spec:
   replicas: 1
   selector:
@@ -158,6 +170,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: wordpress-service
+  namespace: ${NAMESITE}
 spec:
   selector:
     app: wordpress
@@ -174,6 +187,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: wordpress-ingress
+  namespace: ${NAMESITE}
   annotations:
     kubernetes.io/ingress.class: traefik
     cert-manager.io/cluster-issuer: letsencrypt-prod
