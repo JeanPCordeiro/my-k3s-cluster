@@ -8,4 +8,4 @@
 #    msg: "curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} K3S_TOKEN={{ k3s_token }} sh -s server --cluster-init --node-external-ip={{ ansible_eth0.ipv4.address }} --node-ip={{ ansible_eth1.ipv4.address }} --advertise-address={{ ansible_eth1.ipv4.address }} --flannel-iface=eth1"
 
 - name: Install K3S as initial master node
-  shell: 'curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} K3S_TOKEN={{ k3s_token }} sh -s server --cluster-init --node-external-ip={{ ansible_eth0.ipv4.address }} --node-ip={{ ansible_eth1.ipv4.address }} --advertise-address={{ ansible_eth1.ipv4.address }} --flannel-iface=eth1'
+  shell: 'curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION={{ k3s_version }} K3S_TOKEN={{ k3s_token }} sh -s server --docker --cluster-init --node-external-ip={{ ansible_eth0.ipv4.address }} --node-ip={{ ansible_eth1.ipv4.address }} --advertise-address={{ ansible_eth1.ipv4.address }} --flannel-iface=eth1'

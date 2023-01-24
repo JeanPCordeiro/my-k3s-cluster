@@ -59,6 +59,7 @@ k3s_config:
 	rm -fr ~/.kube
 	mkdir ~/.kube 
 	cp /etc/k3s.yaml ~/.kube/config
+	kubectl get nodes -o wide
 
 k3s_longhorn:
 	kubectl wait deployment -n kube-system traefik  --for condition=Available=True --timeout=180s
